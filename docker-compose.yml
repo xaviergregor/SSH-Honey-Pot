@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  ssh-honeypot:
+    build: .
+    container_name: ssh_honeypot
+    ports:
+      - "2222:2222"
+    environment:
+      - TELEGRAM_BOT_TOKEN=VOTRE BOT TOKEN ICI
+      - TELEGRAM_CHAT_ID=VOTRE CHAT ID ICI
+      - TZ=Europe/Paris   
+    volumes:
+      - ./logs:/app/logs
+      - ./keys:/app/keys  # ← AJOUTER CETTE LIGNE
+    restart: unless-stopped
