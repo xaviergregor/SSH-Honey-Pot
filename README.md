@@ -44,7 +44,8 @@ sudo htpasswd -c /etc/nginx/.htpasswd admin
 # Configuration nginx
 sudo vim /etc/nginx/sites-available/honeypot
 
-# Coller ceci :
+# Coller ceci
+```
 server {
     listen 8080;
     server_name _;
@@ -63,7 +64,7 @@ server {
         add_header Cache-Control "no-store, no-cache, must-revalidate";
     }
 }
-
+```
 # Activer NGINX
 
 sudo ln -s /etc/nginx/sites-available/honeypot /etc/nginx/sites-enabled/
