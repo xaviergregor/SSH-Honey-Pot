@@ -18,10 +18,6 @@ docker compose up -d
 # Pour voir les logs
 docker compose logs -f
 
-# Pour bannir les IP
-⚠️ Modifier le fichier pour mettre votre IP 😜\
-auto_ban.sh
-
 # Pour suspendre les notifications Telegram
 toggle_telegram.sh
 
