@@ -20,6 +20,29 @@ TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', 'VOTRE_CHAT_ID_ICI')
 TELEGRAM_ENABLED = os.getenv('TELEGRAM_ENABLED', 'true').lower() == 'true'
 KEY_PATH = '/app/keys/ssh_host_rsa_key'
 TELEGRAM_PAUSE_FILE = '/app/logs/.telegram_paused'
+BLACKLIST_FILE = '/app/logs/blacklist.txt'
+
+# Charger la blacklist
+def load_blacklist():
+    """Charge la liste des IPs bloquées"""
+    blocked = set()
+    if os.path.exists(BLACKLIST_FILE):
+        try:
+            with open(BLACKLIST_FILE, 'r') as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith('#'):
+                        blocked.add(line)
+            print(f"📋 Blacklist chargée: {len(blocked)} IPs bloquées")
+            if blocked:
+                print(f"   IPs: {', '.join(list(blocked)[:5])}")
+        except Exception as e:
+            print(f"Erreur chargement blacklist: {e}")
+    else:
+        print(f"⚠️  Fichier blacklist introuvable: {BLACKLIST_FILE}")
+    return blocked
+
+BLOCKED_IPS = load_blacklist()
 
 # Créer les dossiers
 os.makedirs('/app/keys', exist_ok=True)
@@ -335,6 +358,20 @@ def handle_shell(channel, client_address, username):
 
 def handle_connection(client_socket, client_address):
     """Gère une connexion SSH entrante"""
+    
+    # Recharger la blacklist à chaque connexion
+    global BLOCKED_IPS
+    BLOCKED_IPS = load_blacklist()
+    
+    # Vérifier si l'IP est bloquée
+    if client_address[0] in BLOCKED_IPS:
+        logging.warning(f"🚫 IP bloquée refusée: {client_address[0]}")
+        try:
+            client_socket.close()
+        except:
+            pass
+        return
+    
     try:
         transport = paramiko.Transport(client_socket)
         
