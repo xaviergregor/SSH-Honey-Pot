@@ -24,14 +24,15 @@ toggle_telegram.sh
 
 # OPTION
 
-Pour fail2ban\
+Pour fail2ban
 
 * Mettre le fichier ssh-honeypot.local dans /etc/fail2ban/jail.d/
 * Mettre le fichier ssh-honeypot.conf dans /etc/fail2ban/filter.d/
 
-Pour blacklister des IPs\
+Pour blacklister des IPs
 
 * Déplacer le fichier blacklist.txt dans /logs
+* Utiliser ./auto_blacklist.sh pour bannir les IP avec plus de 10 tentatives
 
 # Pour avoir le DashBoard Web
 
