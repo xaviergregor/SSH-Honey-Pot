@@ -29,6 +29,10 @@ Pour fail2ban\
 * Mettre le fichier ssh-honeypot.local dans /etc/fail2ban/jail.d/
 * Mettre le fichier ssh-honeypot.conf dans /etc/fail2ban/filter.d/
 
+Pour blacklister des IPs\
+
+* Déplacer le fichier blacklist.txt dans /logs
+
 # Pour avoir le DashBoard Web
 
 # Installer nginx et htpasswd
